@@ -39,7 +39,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
 class deleted extends Frame {
 	deleted() {
 		setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -85,7 +84,7 @@ class task_asked extends Frame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-		if (ae.getSource() == yes) {	
+		if (ae.getSource() == yes) {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/college", "root", "");
@@ -285,7 +284,7 @@ class delete_file extends Frame implements ActionListener {
 
 	delete_file() {
 		setName("Delete the data");
-         
+
 		setSize(1000, 1000);
 		setLayout(null);
 		setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -312,28 +311,27 @@ class delete_file extends Frame implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == delete) {
 			try {
-				
-				
+
 				if ((name.getText()).isEmpty()) {
 					p1 = new popupEmptyInformation();
 					p1.setVisible(true);
 					p1.setLocationRelativeTo(null);
-				}else {
-					
+				} else {
+
 					Class.forName("com.mysql.jdbc.Driver");
 					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/college", "root", "");
 					String query = "select * from students where roll_number =?";
 					PreparedStatement stmt = con.prepareStatement(query);
 					stmt.setString(1, name.getText());
-	                boolean flag=false;
-					ResultSet rs=  stmt.executeQuery();
-					while(rs.next()) {
-							flag=true;
+					boolean flag = false;
+					ResultSet rs = stmt.executeQuery();
+					while (rs.next()) {
+						flag = true;
 					}
-					 if (flag==true) {
-						 task_asked tsa = new task_asked(name.getText());
-							tsa.setVisible(true);
-					 }else if(flag==false) {
+					if (flag == true) {
+						task_asked tsa = new task_asked(name.getText());
+						tsa.setVisible(true);
+					} else if (flag == false) {
 						filenotfound fnf = new filenotfound();
 						fnf.setVisible(true);
 						fnf.setLocationRelativeTo(null);
@@ -342,12 +340,13 @@ class delete_file extends Frame implements ActionListener {
 					 * Check whether deleted or not
 					 ******/
 
-				} }catch (Exception a) {
-					System.out.println(a);
-				
-			}
 				}
+			} catch (Exception a) {
+				System.out.println(a);
+
+			}
 		}
+	}
 }
 
 /********************************************************************************
@@ -385,31 +384,31 @@ class Show extends Frame implements ActionListener {
 
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == next) {
-			String file_name= tshow.getText();
+			String file_name = tshow.getText();
 			boolean exist = false;
 			try {
-				
+
 				file_name = tshow.getText();
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/college", "root", "");
 				String query = "select * from students where roll_number =?";
 				PreparedStatement stmt = con.prepareStatement(query);
-				stmt.setString(1, file_name);	
-				ResultSet rs= stmt.executeQuery();	
-			    while(rs.next()) {
-			    	exist=true;
-			    }
-			}catch(SQLException e) {
+				stmt.setString(1, file_name);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					exist = true;
+				}
+			} catch (SQLException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			
-			if(exist==false) {
+
+			if (exist == false) {
 				fnf = new filenotfound();
 				fnf.setVisible(true);
-			}else if(exist == true) {
-				//TODO SHOW HERE
+			} else if (exist == true) {
+				
 				show_content = new show_content(file_name);
 				show_content.setVisible(false);
 				show_content.setLocationRelativeTo(null);
@@ -439,25 +438,25 @@ class show_content extends Frame {
 			}
 		});
 		try {
-			//TODO YAHA AAAA
-			ResultSet rs=null;
+			
+			ResultSet rs = null;
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/college", "root", "");
 				String query = "select * from students where roll_number =?";
 				PreparedStatement stmt = con.prepareStatement(query);
-				stmt.setString(1, name);	
-				rs= stmt.executeQuery();
-			}catch(SQLException e) {
+				stmt.setString(1, name);
+				rs = stmt.executeQuery();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
 			JFrame frame = new JFrame("Student Data");
 			JPanel panel = new JPanel();
-		
+
 			JTable table = new JTable(buildTableModel(rs));
-			table.setEnabled(false);	
+			table.setEnabled(false);
 			table.getColumnModel().getColumn(0).setPreferredWidth(100);
 			table.getColumnModel().getColumn(1).setPreferredWidth(100);
 			table.getColumnModel().getColumn(2).setPreferredWidth(200);
@@ -467,11 +466,10 @@ class show_content extends Frame {
 			table.getColumnModel().getColumn(6).setPreferredWidth(600);
 			table.getColumnModel().getColumn(7).setPreferredWidth(400);
 			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			JScrollPane scrollPane = new JScrollPane(table); 
-			scrollPane.setPreferredSize(new Dimension(1000, 500)); 
+			JScrollPane scrollPane = new JScrollPane(table);
+			scrollPane.setPreferredSize(new Dimension(1000, 500));
 			JOptionPane.showMessageDialog(null, scrollPane);
-			
-			
+
 		} catch (NullPointerException i) {
 			popupOpenFileNullPointer p = new popupOpenFileNullPointer();
 			p.setVisible(true);
@@ -480,44 +478,37 @@ class show_content extends Frame {
 			popupOpenFileIllegalArgument p = new popupOpenFileIllegalArgument();
 			p.setVisible(true);
 			p.setLocationRelativeTo(null);
-		} catch ( SQLException e1) {
+		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 
 	}
-	
-	
-	public DefaultTableModel buildTableModel(ResultSet rs)
-	        throws SQLException {
 
-	    ResultSetMetaData metaData = rs.getMetaData();
+	public DefaultTableModel buildTableModel(ResultSet rs) throws SQLException {
 
-	    // names of columns
-	    Vector<String> columnNames = new Vector<String>();
-	    int columnCount = metaData.getColumnCount();
-	    for (int column = 1; column <= columnCount; column++) {
-	        columnNames.add(metaData.getColumnName(column));
-	    }
+		ResultSetMetaData metaData = rs.getMetaData();
 
-	    // data of the table
-	    Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-	    while (rs.next()) {
-	        Vector<Object> vector = new Vector<Object>();
-	        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-	            vector.add(rs.getObject(columnIndex));
-	        }
-	        data.add(vector);
-	    }
+		// names of columns
+		Vector<String> columnNames = new Vector<String>();
+		int columnCount = metaData.getColumnCount();
+		for (int column = 1; column <= columnCount; column++) {
+			columnNames.add(metaData.getColumnName(column));
+		}
 
-	    return new DefaultTableModel(data, columnNames);
+		// data of the table
+		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		while (rs.next()) {
+			Vector<Object> vector = new Vector<Object>();
+			for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+				vector.add(rs.getObject(columnIndex));
+			}
+			data.add(vector);
+		}
+
+		return new DefaultTableModel(data, columnNames);
 
 	}
-	
-	
-	
-	
-	
-	
+
 }
 
 /***********************************************************************************
@@ -734,6 +725,8 @@ class update_info extends Frame implements ActionListener, ItemListener {
 		 * altmob and taltmob
 		 * 
 		 */
+		
+		
 		altmob = new Label("Alternate Mobile:");
 		altmob.setBounds(200, 300, 170, 50);
 		add(altmob);
@@ -810,8 +803,8 @@ class update_info extends Frame implements ActionListener, ItemListener {
 					others.setState(true);
 					break;
 				}
-				gender_pass=ggender.getSelectedCheckbox().getLabel();
-				
+				gender_pass = ggender.getSelectedCheckbox().getLabel();
+
 				// SETTING MOBILE NUMBER
 				tmob.setText(rs.getString("mobile_number"));
 
@@ -821,7 +814,6 @@ class update_info extends Frame implements ActionListener, ItemListener {
 				// SETTING ADDRESS
 				Taddress.setText(rs.getString("address"));
 
-				
 				// SETTING EMAIL
 				temail.setText(rs.getString("email"));
 
@@ -857,7 +849,7 @@ class update_info extends Frame implements ActionListener, ItemListener {
 				address_pass = Taddress.getText();
 				mob_pass = tmob.getText();
 				altmob_pass = taltmob.getText();
-				//File student_data = new File("..\\src\\Students\\" + roll_pass + ".txt");
+				// File student_data = new File("..\\src\\Students\\" + roll_pass + ".txt");
 				if (is_all_filled == "no") {
 					emptypopup.setVisible(true);
 					emptypopup.setLocationRelativeTo(null);
@@ -873,45 +865,48 @@ class update_info extends Frame implements ActionListener, ItemListener {
 				if (is_altmob_valid == "no") {
 					InvalidAltMobPop.setLocationRelativeTo(null);
 					InvalidAltMobPop.setVisible(true);
+				} else {
+					try {
+						Class.forName("com.mysql.jdbc.Driver");
+						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/college", "root", "");
+
+						String query;
+						// First five fields
+						query = "update students set name=?,roll_number=?,dob=?,gender=? where roll_number=?";
+						PreparedStatement stmt = con.prepareStatement(query);
+						stmt.setString(1, name_pass);
+						stmt.setString(2, roll_pass);
+						stmt.setString(3, date_pass + ":" + month_pass + ":" + year_pass);
+						stmt.setString(4, gender_pass);
+						stmt.setString(5, roll_pass);
+						stmt.executeUpdate();
+
+						// next five fields
+						stmt = null;
+						query = "update students set mobile_number=?,alternate_number=?,address=?,email=? where roll_number=?";
+						stmt = con.prepareStatement(query);
+						stmt.setString(1, mob_pass);
+						stmt.setString(2, altmob_pass);
+						stmt.setString(3, address_pass);
+						stmt.setString(4, email_pass);
+						stmt.setString(5, roll_pass);
+						stmt.executeUpdate();
+						
+						sw = new succesful_written();
+						sw.setVisible(true);
+						sw.setLocationRelativeTo(null);
+						dispose();
+						
+					} catch (SQLException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+
 				}
 
 				
-				try {
-					Class.forName("com.mysql.jdbc.Driver");
-					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/college", "root", "");
-					
-					String query;
-					//First five fields
-					query = "update students set name=?,roll_number=?,dob=?,gender=? where roll_number=?";
-					PreparedStatement stmt = con.prepareStatement(query);
-					stmt.setString(1,name_pass);
-					stmt.setString(2, roll_pass);
-					stmt.setString(3,date_pass+":"+month_pass+":"+year_pass);
-					stmt.setString(4, gender_pass);
-					stmt.setString(5, roll_pass);
-					stmt.executeUpdate();
-					
-					//next five fields
-					stmt=null;
-					query = "update students set mobile_number=?,alternate_number=?,address=?,email=? where roll_number=?";
-					stmt = con.prepareStatement(query);
-					stmt.setString(1, mob_pass);
-					stmt.setString(2, altmob_pass);
-					stmt.setString(3, address_pass);
-					stmt.setString(4, email_pass);
-					stmt.setString(5, roll_pass);
-					stmt.executeUpdate();
-				}catch(SQLException e) {
-					e.printStackTrace();
-				}catch(ClassNotFoundException e) {
-					e.printStackTrace();
-				}
 				
-				
-				sw = new succesful_written();
-				sw.setVisible(true);
-				sw.setLocationRelativeTo(null);
-				dispose();
 
 			}
 
@@ -1578,21 +1573,21 @@ public class Registration extends Applet implements ActionListener {
 
 	public void init() {
 		setName("Welcome to Student Management System");
-		setSize(5000, 5000);
+		setSize(2000, 20000);
 		setLayout(null);
 		update_record = new update_record("Update the Student Record");
 		register_record = new register_record("Register the student");
 		register_record.setLocationRelativeTo(null);
 		update_record.setLocationRelativeTo(null);
-		setFont(new Font("Serif", Font.BOLD, 50));
+		setFont(new Font("Serif", Font.BOLD, 30));
 		submit = new Button("Register new record");
 		find = new Button("Update the existing record");
 		delete = new Button("Delete the existing record");
 		show = new Button("Show the existing record");
-		submit.setBounds(700, 400, 600, 60);
-		find.setBounds(700, 500, 600, 60);
-		delete.setBounds(700, 600, 600, 60);
-		show.setBounds(700, 700, 600, 60);
+		submit.setBounds(400, 100, 400, 60);
+		find.setBounds(400, 200, 400, 60);
+		delete.setBounds(400, 300, 400, 60);
+		show.setBounds(400, 400, 400, 60);
 		add(submit);
 		add(find);
 		add(delete);
